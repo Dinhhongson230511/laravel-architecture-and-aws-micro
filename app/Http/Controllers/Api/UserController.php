@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Api\DefaultController;
 use App\Services\Api\UserService;
-
 class UserController extends DefaultController
 {
     protected $userService;

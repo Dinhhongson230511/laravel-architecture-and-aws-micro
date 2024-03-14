@@ -10,13 +10,13 @@ use Carbon\Carbon;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Http\Resources\Json\JsonResource;
-
+use App\Traits\FileUploadTrait;
 
 class BaseService
 {
     // use WebResponse;
+    use FileUploadTrait;
 
     public function generateUserRegisteredToken(User $user): string
     {
@@ -51,11 +51,13 @@ class BaseService
 
     public function responseData(
         string $status,
-        array|Collection|JsonResource $data = []
+        array|Collection|JsonResource $data = [],
+        string $message = ''
     ) {
         return [
             'status' => $status,
             'data' => $data,
+            'message' => $message
         ];
     }
 }

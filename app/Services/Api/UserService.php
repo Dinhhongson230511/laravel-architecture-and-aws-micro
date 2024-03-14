@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Services\BaseService;
 use Illuminate\Support\Facades\DB;
 use App\Repositories\Interfaces\UserRepositoryInterface;
+use Illuminate\Http\Request;
 
 /**
  * Class UserService
@@ -36,6 +37,5 @@ class UserService extends BaseService
     {
         $users = $this->userRepository->paginate(10);
         return $this->responseData(true, new UserCollection($users));
-
     }
 }
