@@ -3,7 +3,13 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\Admin\UserController;
+use App\Http\Controllers\Api\Admin\RoleController;
+use App\Http\Controllers\Api\Auth\AuthController;
+use App\Http\Controllers\Api\Admin\ProductController;
+use App\Http\Controllers\Api\Admin\OrderController;
+use App\Http\Controllers\Api\Admin\PermissionController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -20,6 +26,22 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/', [UserController::class, 'getUser'])->name('user.get');
-Route::get('/user', [UserController::class, 'show'])->name('user.show');
+Route::group(['middleware' => 'auth:api'], function() {
 
+    Route::get('/user', [AuthController::class, 'getUser']);
+    Route::patch('/user/info', [AuthController::class, 'userUpdateInfo']);
+    Route::patch('/user/change/password', [AuthController::class, 'changePassword']);
+    Route::post('/upload/image/product', [ProductController::class, 'uploadImage']);
+    Route::get('export', [OrderController::class, 'export']);
+    Route::get('chart', [OrderController::class, 'chart']);
+
+
+    Route::apiResource('roles', RoleController::class);
+    Route::apiResource('products', ProductController::class);
+    Route::apiResource('orders', OrderController::class)->only('index', 'show');
+    Route::apiResource('users', UserController::class);
+    Route::apiResource('permissions', PermissionController::class)->only('index');
+});
+
+Route::post('/login', [AuthController::class, 'login']);
+Route::post('/register', [AuthController::class, 'register']);

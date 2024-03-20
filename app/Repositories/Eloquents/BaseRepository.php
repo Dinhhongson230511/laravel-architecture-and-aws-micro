@@ -14,19 +14,19 @@ abstract class BaseRepository implements BaseRepositoryInterface
         $this->model = $model;
     }
 
-    public function get()
+    public function get(array $relations = [])
     {
-        return $this->model->get();
+        return $this->model->with($relations)->get();
     }
 
-    public function paginate(int $page)
+    public function paginate(int $page, array $relations = [])
     {
-        return $this->model->paginate($page);
+        return $this->model->with($relations)->paginate($page);
     }
 
-    public function find($id)
+    public function find(int $id, array $relations = [])
     {
-        return $this->model->findOrFail($id);
+        return $this->model->with($relations)->findOrFail($id);
     }
 
     public function create(array $data)
@@ -45,5 +45,10 @@ abstract class BaseRepository implements BaseRepositoryInterface
     {
         $model = $this->find($id);
         return $model->delete();
+    }
+
+    public function findByColumn(string $column, $value, array $relations = [])
+    {
+        return $this->model->with($relations)->where($column, $value)->first();
     }
 }

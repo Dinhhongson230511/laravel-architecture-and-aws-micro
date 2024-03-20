@@ -25,13 +25,13 @@ trait ResponseApiTrait
      *
      * @return array
      */
-    protected function responseSuccess($data, string $message = ''): JsonResponse
+    protected function responseSuccess($data, string $message = '', string $cookie = ''): JsonResponse
     {
         return response()->json([
             'message' => $message,
             'data' => $data,
             'status' => Response::HTTP_OK
-        ], Response::HTTP_OK);
+        ], Response::HTTP_OK)->withCookie($cookie);
     }
 
     /**

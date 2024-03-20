@@ -8,4 +8,6 @@ interface UserRepositoryInterface extends BaseRepositoryInterface
 {
     // Add specific methods for user-related operations if needed
     public function getUserById(int $int);
+
+    public function getUsers(int $page);
 }

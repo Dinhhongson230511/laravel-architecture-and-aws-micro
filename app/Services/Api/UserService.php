@@ -23,19 +23,45 @@ class UserService extends BaseService
         $this->userRepository = $userRepository;
     }
 
-    public function getUserInfoById(int $id)
+    public function getUser(User $user)
     {
-        $user = $this->userRepository->getUserById($id);
+        $user->load('role.permissions');
         if($user) {
            return $this->responseData(true, new UserResource($user));
         }
         return $this->responseData(false);
     }
 
-    public function getAll()
+    public function getAll(int $page)
     {
-        $users = $this->userRepository->paginate(10);
+        $users = $this->userRepository->paginate($page);
         return $this->responseData(true, new UserCollection($users));
+    }
 
+    public function store(array $params)
+    {
+        $user = $this->userRepository->create($params);
+        if($user) {
+            return $this->responseData(true, new UserResource($user));
+        }
+         return $this->responseData(false);
+    }
+
+    public function update(array $params, User $user)
+    {
+        $user = $this->userRepository->update($user->id, $params);
+        if($user) {
+            return $this->responseData(true, new UserResource($user));
+        }
+         return $this->responseData(false);
+    }
+
+    public function destroy(User $user)
+    {
+        $data = $this->userRepository->delete($user->id);
+        if($data) {
+            return $this->responseData(true, new UserResource($user));
+        }
+        return $this->responseData(false);
     }
 }

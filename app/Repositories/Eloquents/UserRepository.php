@@ -15,7 +15,13 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
         parent::__construct($user);
     }
 
-    public function getUserById(int $id) {
+    public function getUserById(int $id) 
+    {
       return $this->model->where('id', $id)->first();
+    }
+
+    public function getUsers(int $page) 
+    {
+      return $this->model->with('role')->paginate($page);
     }
 }

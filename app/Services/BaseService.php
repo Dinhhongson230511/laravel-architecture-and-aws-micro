@@ -12,11 +12,13 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Traits\FileUploadTrait;
 
 
 class BaseService
 {
     // use WebResponse;
+    use FileUploadTrait;
 
     public function generateUserRegisteredToken(User $user): string
     {
