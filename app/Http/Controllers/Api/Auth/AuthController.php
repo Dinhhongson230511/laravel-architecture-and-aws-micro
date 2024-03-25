@@ -9,6 +9,7 @@ use App\Http\Requests\Api\Auth\UserUpdateRequest;
 use App\Http\Requests\Api\Auth\ChangePasswordRequest;
 use App\Services\Api\AuthService;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Cookie;
 
 class AuthController extends DefaultController
 {
@@ -23,26 +24,23 @@ class AuthController extends DefaultController
     {
         $response = $this->authService->login($request);
         if ($response['status']) {
-            return $this->responseSuccess(
-                $response['data']['token'],
-                __('auth.message.login.success'),
-                $response['data']['cookie']
-            );
+            $token = $response['data']['token'];
+            $cookie = \cookie('jwt', $token, 3600);
+            return \response([
+                'token' => $token
+            ])->withCookie($cookie);
         }
         return $this->responseUnAuthorized();
     }
 
     public function logout()
     {
-        $response = $this->authService->logout();
-        if ($response['status']) {
-            return $this->responseSuccess(
-                [],
-                __('auth.message.login.success'),
-                $response['cookie']
-            );
-        }
-        return $this->responseUnAuthorized();
+        // $response = $this->authService->logout();
+        $cookie = Cookie::forget('jwt');
+
+        return \response([
+            'mesdage' => 'success'
+        ])->withCookie($cookie);
     }
 
     public function register(RegisterRequest $request)

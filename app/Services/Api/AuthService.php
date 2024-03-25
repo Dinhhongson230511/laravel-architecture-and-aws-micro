@@ -29,7 +29,6 @@ class AuthService extends BaseService
             $user = Auth::user();
             $token = $user->createToken($request->email)->accessToken;
             $data['token'] = $token;
-            $data['cookie'] = \cookie('jwt', $token, 3600);
 
             return $this->responseData(true, $data);
         }
@@ -38,8 +37,8 @@ class AuthService extends BaseService
 
     public function logout()
     {
-        $data['cookie'] = Cookie::forget('jwt');
-        return $this->responseData(true, $data);
+        Cookie::forget('jwt');
+        return $this->responseData(true, []);
     }
 
     public function register(array $params)
@@ -54,7 +53,7 @@ class AuthService extends BaseService
     public function getUser()
     {
         $user = Auth::user();
-        $user->load('role.permissions');
+        $user->load('role');
         if($user) {
            return $this->responseData(true, new UserResource($user));
         }

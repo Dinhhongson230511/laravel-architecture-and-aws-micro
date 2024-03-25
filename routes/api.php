@@ -34,7 +34,7 @@ Route::group(['middleware' => 'auth:api'], function() {
     Route::post('/upload/image/product', [ProductController::class, 'uploadImage']);
     Route::get('export', [OrderController::class, 'export']);
     Route::get('chart', [OrderController::class, 'chart']);
-
+    Route::get('/logout', [AuthController::class, 'logout']);
 
     Route::apiResource('roles', RoleController::class);
     Route::apiResource('products', ProductController::class);

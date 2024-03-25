@@ -27,11 +27,17 @@ trait ResponseApiTrait
      */
     protected function responseSuccess($data, string $message = '', string $cookie = ''): JsonResponse
     {
-        return response()->json([
+        $response = response()->json([
             'message' => $message,
             'data' => $data,
             'status' => Response::HTTP_OK
-        ], Response::HTTP_OK)->withCookie($cookie);
+        ], Response::HTTP_OK);
+
+        if ($cookie !== null && $cookie !== '') {
+            $response->withCookie($cookie);
+        }
+
+        return $response;
     }
 
     /**

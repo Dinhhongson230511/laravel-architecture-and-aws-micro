@@ -27,7 +27,8 @@ class UserCreateRequest extends FormRequest
             'first_name' => 'required',
             'last_name' => 'required',
             'email' => ['required', 'email:rfc,dns', 'max:60', 'regex:' . config('regex.email')],
-            'password' => 'required'
+            'password' => 'required',
+            'role_id' => 'required'
         ];
     }
 

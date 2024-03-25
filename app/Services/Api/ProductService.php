@@ -35,8 +35,8 @@ class ProductService extends BaseService
 
     public function store(array $params)
     {
-        $image = $this->uploadFileLocal('images', $params['image'], 'product');
-        $params['image'] = $image['filePath'] ?? null;
+        // $image = $this->uploadFileLocal('images', $params['image'], 'product');
+        // $params['image'] = $image['filePath'] ?? null;
         $product = $this->productRepository->create($params);
         if($product) {
             return $this->responseData(true, new ProductResource($product));

@@ -33,10 +33,14 @@ class RoleController extends DefaultController
 
     public function show(Role $role)
     {
-        return $this->responseSuccess(
-            $role,
-            __('common.success_message')
-        );
+        $response = $this->roleService->show($role);
+        if ($response['status']) {
+            return $this->responseSuccess(
+                $response['data'],
+                __('common.success_message')
+            );
+        }
+        return $this->responseBadRequest();
     }
 
     public function store(RoleCreateRequest $request)

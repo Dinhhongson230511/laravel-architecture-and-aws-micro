@@ -22,9 +22,9 @@ class RoleService extends BaseService
         $this->roleRepository = $roleRepository;
     }
 
-    public function show(int $id)
+    public function show(Role $role)
     {
-        $role = $this->roleRepository->find($id, ['permissions']);
+        $role->load('permissions');
         if($role) {
            return $this->responseData(true, new RoleResource($role));
         }
